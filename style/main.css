@@ -699,6 +699,7 @@ hr {
     line-height: 30px !important;
     margin-top: 90px !important; }
   .game-message .lower {
+<<<<<<< HEAD
     margin-top: 30px !important; }
 
   .sharing > iframe, .sharing > span, .sharing > form {
@@ -794,3 +795,58 @@ hr {
         .btc-donate .address:after {
           left: 50%;
           bottom: 2px; } }
+=======
+    margin-top: 30px !important; } }
+
+.buttonset {
+  font-size: 10pt;
+}
+
+#autoplay-container {
+  width: 50%;
+  float: left;
+}
+
+#placement-container {
+  width: 50%;
+  float: right;
+}
+
+#options-container {
+  height: 95px;
+}
+
+.placement-help {
+  margin-top: 10px;
+  font-size: 9pt;
+}
+
+.placement-help div {
+  display: none;
+}
+
+#ai-stats-container {
+  font-size: 8pt;
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-right: 20px;
+  background-color: #eee;
+  height: 42px;
+  line-height: 1.1em;
+}
+
+#ai-stats-none {
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+}
+
+#ai-stats-header {
+  font-size: 9pt;
+  font-weight: bold;
+  background-color: #888;
+  padding: 2px 0 0 2px;
+  line-height: 1em;
+  color: #fff;
+  margin: 10px 20px 0 0;
+}
+>>>>>>> master

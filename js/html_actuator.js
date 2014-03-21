@@ -5,6 +5,8 @@ function HTMLActuator() {
   this.messageContainer = document.querySelector(".game-message");
   this.sharingContainer = document.querySelector(".score-sharing");
 
+  this.aiStatsContainer = $("#ai-stats-container");
+
   this.score = 0;
 }
 
@@ -37,12 +39,19 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 };
 
 // Continues the game (both restart and keep playing)
+<<<<<<< HEAD
 HTMLActuator.prototype.continue = function () {
   if (typeof ga !== "undefined") {
     ga("send", "event", "game", "restart");
   }
 
+=======
+HTMLActuator.prototype.continue = function (keepPlaying) {
+>>>>>>> master
   this.clearMessage();
+  if (keepPlaying) {
+    $("#options-container").html("Restart the game to enable autoplay and tile placement modes!");
+  }
 };
 
 HTMLActuator.prototype.clearContainer = function (container) {
@@ -151,6 +160,7 @@ HTMLActuator.prototype.clearMessage = function () {
   this.messageContainer.classList.remove("game-over");
 };
 
+<<<<<<< HEAD
 HTMLActuator.prototype.scoreTweetButton = function () {
   var tweet = document.createElement("a");
   tweet.classList.add("twitter-share-button");
@@ -166,3 +176,12 @@ HTMLActuator.prototype.scoreTweetButton = function () {
 
   return tweet;
 };
+=======
+HTMLActuator.prototype.aiStatsMode = function(on) {
+  if (on) {
+    this.aiStatsContainer.find("#ai-stats-none").hide();
+    this.aiStatsContainer.find("#ai-stats").show();
+  }
+};
+
+>>>>>>> master
