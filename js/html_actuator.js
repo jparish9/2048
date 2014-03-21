@@ -4,6 +4,8 @@ function HTMLActuator() {
   this.bestContainer    = document.querySelector(".best-container");
   this.messageContainer = document.querySelector(".game-message");
 
+  this.aiStatsContainer = $("#ai-stats-container");
+
   this.score = 0;
 }
 
@@ -36,8 +38,11 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 };
 
 // Continues the game (both restart and keep playing)
-HTMLActuator.prototype.continue = function () {
+HTMLActuator.prototype.continue = function (keepPlaying) {
   this.clearMessage();
+  if (keepPlaying) {
+    $("#options-container").html("Restart the game to enable autoplay and tile placement modes!");
+  }
 };
 
 HTMLActuator.prototype.clearContainer = function (container) {
@@ -137,3 +142,11 @@ HTMLActuator.prototype.clearMessage = function () {
   this.messageContainer.classList.remove("game-won");
   this.messageContainer.classList.remove("game-over");
 };
+
+HTMLActuator.prototype.aiStatsMode = function(on) {
+  if (on) {
+    this.aiStatsContainer.find("#ai-stats-none").hide();
+    this.aiStatsContainer.find("#ai-stats").show();
+  }
+};
+

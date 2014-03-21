@@ -6,23 +6,42 @@ function GameManager(size, InputManager, Actuator, ScoreManager) {
 
   this.startTiles   = 2;
 
+  this.difficulty = 1;      // default to random play
+  this.autoPlayOn = false;
+
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+  this.inputManager.on("setAutoplay", this.setAutoplay.bind(this));
+  this.inputManager.on("setPlacement", this.setPlacementMode.bind(this));
 
   this.setup();
 }
 
 // Restart the game
 GameManager.prototype.restart = function () {
-  this.actuator.continue();
+  this.actuator.continue(false);
   this.setup();
 };
 
 // Keep playing after winning
 GameManager.prototype.keepPlaying = function () {
   this.keepPlaying = true;
-  this.actuator.continue();
+  this.autoPlayOn = false;
+  this.difficulty = 1;
+  this.actuator.continue(true);
+};
+
+GameManager.prototype.setAutoplay = function(on) {
+  this.autoPlayOn = on;
+  this.actuator.aiStatsMode(on);
+
+  if (on)
+    this.autoPlay();
+};
+
+GameManager.prototype.setPlacementMode = function(mode) {
+  this.difficulty = mode;
 };
 
 GameManager.prototype.isGameTerminated = function () {
@@ -45,8 +64,12 @@ GameManager.prototype.setup = function () {
   // Add the initial tiles
   this.addStartTiles();
 
+  this.player = new Player(this.grid);
+
   // Update the actuator
   this.actuate();
+
+  this.autoPlay();      // start autoplay if game restarted.
 };
 
 // Set up the initial tiles to start the game with
@@ -153,7 +176,19 @@ GameManager.prototype.move = function (direction) {
   });
 
   if (moved) {
-    this.addRandomTile();
+    if (this.difficulty == 1) {
+      this.addRandomTile();
+    }
+    else if (this.difficulty == 2) {      // hard mode!
+      this.actuate();
+
+      var move = this.player.search(false);
+
+      if (move.move == undefined) return;
+
+      tile = new Tile({x: move.move.position.y, y: move.move.position.x}, move.move.value);
+      this.grid.insertTile(tile);
+    }
 
     if (!this.movesAvailable()) {
       this.over = true; // Game over!
@@ -242,4 +277,18 @@ GameManager.prototype.tileMatchesAvailable = function () {
 
 GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
+};
+
+GameManager.prototype.autoPlay = function() {
+  if (this.over || this.won || !this.autoPlayOn) return;
+
+  var move = this.player.search(true);    // search for the best next move
+  if (move.move == undefined) return;     // end of game condition
+
+  this.move(move.move);
+
+  var $this = this;
+
+  // continue to autoplay until directed otherwise (end of game or autoplay off button pressed)
+  window.setTimeout(function() { $this.autoPlay() }, 600);
 };

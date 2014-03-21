@@ -72,6 +72,15 @@ KeyboardInputManager.prototype.listen = function () {
   keepPlaying.addEventListener("click", this.keepPlaying.bind(this));
   keepPlaying.addEventListener("touchend", this.keepPlaying.bind(this));
 
+  // document.querySelector doesn't pick up multiple elements.
+  $("input[name='autoplay']")
+      .click(this.setAutoplayMode.bind(this))
+      .bind("touchend", this.setAutoplayMode.bind(this));
+
+  $("input[name='placement']")
+      .click(this.setPlacementMode.bind(this))
+      .bind("touchend", this.setPlacementMode.bind(this));
+
   // Listen to swipe events
   var touchStartClientX, touchStartClientY;
   var gameContainer = document.getElementsByClassName("game-container")[0];
@@ -128,3 +137,14 @@ KeyboardInputManager.prototype.keepPlaying = function (event) {
   event.preventDefault();
   this.emit("keepPlaying");
 };
+
+KeyboardInputManager.prototype.setAutoplayMode = function (event) {
+  event.preventDefault();
+  this.emit("setAutoplay", event.currentTarget.value == 1);
+};
+
+KeyboardInputManager.prototype.setPlacementMode = function (event) {
+  event.preventDefault();
+  this.emit("setPlacement", parseInt(event.currentTarget.value));
+};
+
