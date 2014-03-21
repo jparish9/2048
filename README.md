@@ -5,6 +5,8 @@ Original version by [Gabriele Cirulli](https://github.com/gabrielecirulli/2048).
 
 This version adds an Autoplay mode and a 'hard' tile placement mode.
 
+Play it <a href="http://jparish9.github.io/2048-Autoplay">here!</a>
+
 ## Autoplay (AI)
 
 The AI uses minimax, alpha-beta pruning, and iterative deepening with principal variation search.  It is heavily optimized for speed and only functions on a grid size of 4x4.  Most of the speed optimizations come from storing the internal state in just 64 bits (16 cells x 12 possible states [4 bits]), and making heavy use of JavaScript's bitwise operators.
